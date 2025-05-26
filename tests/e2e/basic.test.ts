@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test.describe("Before login", () => {
     test("titleが設定されている", async ({page}) => {
         await page.goto("/");
-        await expect(page).toHaveTitle(/Myurion/);
+        await expect(page).toHaveTitle(/Twilight/);
     });
 
     test("未ログインの場合Welcomeページが表示される", async ({page}) => {
