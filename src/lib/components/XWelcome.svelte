@@ -59,7 +59,7 @@
 					url(https://images.unsplash.com/photo-1660491630578-4299a3c09db0?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);"
         ></div>
         <div class="relative z-20 flex items-center text-lg font-medium">
-            Myurion Notes
+           Twilight Cloud
         </div>
         <div class="relative z-20 mt-auto">
             <blockquote class="space-y-2">
@@ -99,7 +99,7 @@
         <!-- footer -->
         <div class="absolute right-4 bottom-4 md:right-8 md:bottom-8 text-right">
             <p class="text-sm text-gray-500">
-                ©2024 nexryai All rights reserved.<br>
+                ©2024-2025 nexryai All rights reserved.<br>
                 <span class="text-xs">THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.</span>
             </p>
         </div>

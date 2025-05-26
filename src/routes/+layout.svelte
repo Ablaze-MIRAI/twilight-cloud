@@ -93,7 +93,7 @@
 </script>
 
 <svelte:head>
-    <title>Myurion Note</title>
+    <title>Twilight Cloud</title>
 </svelte:head>
 
 {#if !isSignedIn}
