@@ -56,7 +56,7 @@
                 class="absolute inset-0 bg-cover"
                 style="
 				background-image:
-					url(https://images.unsplash.com/photo-1660491630578-4299a3c09db0?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);"
+					url(/bg0.webp);"
         ></div>
         <div class="relative z-20 flex items-center text-lg font-medium">
            Twilight Cloud
@@ -72,7 +72,7 @@
             <div class="flex flex-col space-y-2 text-center">
                 <h1 class="text-2xl font-semibold tracking-tight">Welcome back</h1>
                 <p class="text-muted-foreground text-sm">
-                    Sign in to continue to Goshenite Notes
+                    Sign in to continue to Twilight Cloud.
                 </p>
             </div>
             <div class={cn("grid gap-6", className)} {...$$restProps}>
