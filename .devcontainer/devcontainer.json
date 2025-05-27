@@ -1,15 +1,11 @@
 {
-    "name": "Myurion Dev",
-    "image": "node:22",
+    "name": "Twilight Dev",
+    "build": {
+        "dockerfile": "./Dockerfile"
+    },
     "features": {
         "ghcr.io/devcontainers-extra/features/pnpm:2": {}
     },
-    "runArgs": [
-        "-p",
-        "127.0.0.1:5173:5173",
-        "--user",
-        "node"
-    ],
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
     "workspaceFolder": "/workspace",
     "remoteUser": "node",
@@ -17,6 +13,7 @@
     "customizations": {
         "vscode": {
             "extensions": [
+                "denoland.vscode-deno",
                 "svelte.svelte-vscode",
                 "bradlc.vscode-tailwindcss",
                 "dbaeumer.vscode-eslint",
@@ -27,7 +24,13 @@
             "settings": {
                 "editor.linkedEditing": true,
                 "editor.formatOnPaste": true,
-                "editor.formatOnSave": true
+                "editor.formatOnSave": false,
+                "html.format.wrapLineLength": 0,
+                "editor.quickSuggestions": {
+                    "strings": "on"
+                },
+                "deno.enablePaths": ["./edge"],
+                "deno.disablePaths": ["/workspace/src", "/workspace/tests"]
             }
         }
     }
