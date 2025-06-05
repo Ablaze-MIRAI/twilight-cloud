@@ -12,8 +12,8 @@ importers:
         specifier: ^6.9.0
         version: 6.9.0(pg@8.16.0)
       '@prisma/client':
-        specifier: ^6.6.0
-        version: 6.6.0(prisma@6.9.0(typescript@5.7.3))(typescript@5.7.3)
+        specifier: ^6.9.0
+        version: 6.9.0(prisma@6.9.0(typescript@5.7.3))(typescript@5.7.3)
       '@simplewebauthn/server':
         specifier: ^13.1.1
         version: 13.1.1
@@ -158,7 +158,7 @@ importers:
         version: 1.52.0
       prismock:
         specifier: ^1.35.3
-        version: 1.35.3(@prisma/client@6.6.0(prisma@6.9.0(typescript@5.7.3))(typescript@5.7.3))(prisma@6.9.0(typescript@5.7.3))
+        version: 1.35.3(@prisma/client@6.9.0(prisma@6.9.0(typescript@5.7.3))(typescript@5.7.3))(prisma@6.9.0(typescript@5.7.3))
       sass-embedded:
         specifier: ^1.87.0
         version: 1.87.0
@@ -499,8 +499,8 @@ packages:
     peerDependencies:
       pg: ^8.11.3
 
-  '@prisma/client@6.6.0':
-    resolution: {integrity: sha512-vfp73YT/BHsWWOAuthKQ/1lBgESSqYqAWZEYyTdGXyFAHpmewwWL2Iz6ErIzkj4aHbuc6/cGSsE6ZY+pBO04Cg==}
+  '@prisma/client@6.9.0':
+    resolution: {integrity: sha512-Gg7j1hwy3SgF1KHrh0PZsYvAaykeR0PaxusnLXydehS96voYCGt1U5zVR31NIouYc63hWzidcrir1a7AIyCsNQ==}
     engines: {node: '>=18.18'}
     peerDependencies:
       prisma: '*'
@@ -3331,7 +3331,7 @@ snapshots:
       pg: 8.16.0
       postgres-array: 3.0.4
 
-  '@prisma/client@6.6.0(prisma@6.9.0(typescript@5.7.3))(typescript@5.7.3)':
+  '@prisma/client@6.9.0(prisma@6.9.0(typescript@5.7.3))(typescript@5.7.3)':
     optionalDependencies:
       prisma: 6.9.0(typescript@5.7.3)
       typescript: 5.7.3
@@ -5234,10 +5234,10 @@ snapshots:
     optionalDependencies:
       typescript: 5.7.3
 
-  prismock@1.35.3(@prisma/client@6.6.0(prisma@6.9.0(typescript@5.7.3))(typescript@5.7.3))(prisma@6.9.0(typescript@5.7.3)):
+  prismock@1.35.3(@prisma/client@6.9.0(prisma@6.9.0(typescript@5.7.3))(typescript@5.7.3))(prisma@6.9.0(typescript@5.7.3)):
     dependencies:
       '@paralleldrive/cuid2': 2.2.2
-      '@prisma/client': 6.6.0(prisma@6.9.0(typescript@5.7.3))(typescript@5.7.3)
+      '@prisma/client': 6.9.0(prisma@6.9.0(typescript@5.7.3))(typescript@5.7.3)
       '@prisma/generator-helper': 5.22.0
       '@prisma/internals': 5.22.0
       bson: 6.10.3
