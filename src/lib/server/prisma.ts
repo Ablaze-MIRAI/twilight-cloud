@@ -1,12 +1,16 @@
-import { PrismaPg } from "@prisma/adapter-pg";
+//import { PrismaPg } from "@prisma/adapter-pg";
 
 import { PrismaClient } from "@prisma/client";
 
 class PrismaRepository extends PrismaClient {
+    /*
+    2025/06/05: 登録時に外部キー制約エラーが出るバグがあるため保留
+
     constructor() {
         const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
         super({ adapter });
     }
+    */
 
     async onModuleInit() {
         await this.$connect();
