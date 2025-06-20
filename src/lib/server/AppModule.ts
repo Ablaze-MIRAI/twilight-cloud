@@ -5,9 +5,9 @@ import type { NoteService } from "$lib/server/services/NoteService";
 import type { UserService } from "$lib/server/services/UserService";
 import { Prisma } from "@prisma/client";
 
-export class AppController {
+export class AppModule {
     constructor(
-        private readonly router: Elysia,
+        private readonly controller: Elysia,
         private readonly userService: UserService,
         private readonly noteService: NoteService,
         private readonly passkeyAuthService: PasskeyAuthService
@@ -59,7 +59,7 @@ export class AppController {
         });
 
     public configAuthRouter() {
-        this.router.post("/auth/register-request", async ({ body, cookie: { challengeSession } }) => {
+        this.controller.post("/auth/register-request", async ({ body, cookie: { challengeSession } }) => {
             const user = await this.userService.createUser({ name: body.displayName });
             const res = await this.passkeyAuthService.genRegisterChallenge(user.id, body.displayName);
 
@@ -79,7 +79,7 @@ export class AppController {
             })
         });
 
-        this.router.post("/auth/verify-registration", async ({ body, cookie }) => {
+        this.controller.post("/auth/verify-registration", async ({ body, cookie }) => {
             const encryptedChallenge = cookie.challengeSession.value;
             const ok = await this.passkeyAuthService.verifyRegistration(encryptedChallenge, body as unknown);
             if (!ok) {
@@ -93,7 +93,7 @@ export class AppController {
             })
         });
 
-        this.router.get("/auth/login-request", async ({ cookie: { challengeSession } }) => {
+        this.controller.get("/auth/login-request", async ({ cookie: { challengeSession } }) => {
             const res = await this.passkeyAuthService.genLoginChallenge();
             challengeSession.value = res.encryptedChallenge;
             challengeSession.httpOnly = true;
@@ -105,7 +105,7 @@ export class AppController {
             return res.options;
         });
 
-        this.router.post("/auth/verify-login", async ({ body, cookie: { challengeSession, token } }) => {
+        this.controller.post("/auth/verify-login", async ({ body, cookie: { challengeSession, token } }) => {
             const encryptedChallenge = challengeSession.value;
             const result = await this.passkeyAuthService.verifyLogin(encryptedChallenge, body as unknown);
 
@@ -125,7 +125,7 @@ export class AppController {
             })
         });
 
-        this.router.get("/auth/logout", async ({ cookie: { token } }) => {
+        this.controller.get("/auth/logout", async ({ cookie: { token } }) => {
             token.value = "";
             token.httpOnly = true;
             token.secure = true;
@@ -140,8 +140,8 @@ export class AppController {
     }
 
     public configApiRouter() {
-        this.router.use(this.errorHandler);
-        this.router.derive(({ cookie: { token } }) => {
+        this.controller.use(this.errorHandler);
+        this.controller.derive(({ cookie: { token } }) => {
             // Auth middleware
             if (!token || !token.value) {
                 throw new Error("AuthError: token not found");
