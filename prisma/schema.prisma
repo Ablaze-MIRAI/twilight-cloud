@@ -68,4 +68,5 @@ model Media {
   updatedAt  DateTime     @updatedAt
   user       User         @relation(fields: [userId], references: [id])
   userId     String
+  isPublic   Boolean      @default(false)
 }
