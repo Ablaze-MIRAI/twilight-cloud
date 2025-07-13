@@ -1,5 +1,7 @@
 import Elysia from "elysia";
 
+import { Prisma } from "@prisma/client";
+
 export const errorHandler = new Elysia({ aot: false, precompile: true })
     .onError(({ code, error, set }) => {
         if (code == "NOT_FOUND") {
