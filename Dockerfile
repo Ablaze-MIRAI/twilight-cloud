@@ -9,7 +9,7 @@ RUN cargo build --release
 
 
 # ビルド用
-FROM node:22-alpine3.20 as builder
+FROM node:24-alpine as builder
 RUN apk add --no-cache ca-certificates git libressl libressl-dev
 
 WORKDIR /app
@@ -20,7 +20,7 @@ RUN npm install -g pnpm
 RUN pnpm install
 RUN pnpm build
 
-FROM node:22-alpine3.20 as prod_dependencies
+FROM node:24-alpine as prod_dependencies
 RUN apk add --no-cache ca-certificates git libressl libressl-dev
 
 WORKDIR /app
@@ -32,7 +32,7 @@ RUN pnpm install --prod --frozen-lockfile
 # 実行用
 # 本来なら3.21を使いたいが、Prisma側のバグにより起動しなくなるため3.20で固定する
 # https://github.com/prisma/prisma/issues/25817
-FROM node:22-alpine3.20
+FROM node:24-alpine
 
 RUN apk add --no-cache ca-certificates tini \
 	&& addgroup -g 720 app \
