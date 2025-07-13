@@ -25,7 +25,7 @@ model User {
 model OAuthAccount {
   id                 String    @id @default(cuid())
   createdAt          DateTime  @default(now())
-  externalUid        String
+  externalUid        String    @unique
   user               User      @relation(fields: [userId], references: [id])
   userId             String
 }
