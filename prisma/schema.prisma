@@ -13,7 +13,7 @@ model User {
   id                 String         @id @default(cuid())
   createdAt          DateTime       @default(now())
   name               String?
-  oauth2Ids          OAuthAccounts[]
+  oauth2Ids          OAuthAccount[]
   passkeys           Passkey[]
   noteCategories     NoteCategory[]
   notes              Note[]
@@ -22,7 +22,7 @@ model User {
   quickNoteUpdatedAt DateTime?
 }
 
-model OAuthAccounts {
+model OAuthAccount {
   id                 String    @id @default(cuid())
   createdAt          DateTime  @default(now())
   externalUid        String
