@@ -13,7 +13,9 @@ import type {
 } from "@simplewebauthn/server";
 import { isoBase64URL } from "@simplewebauthn/server/helpers";
 
-import type { IPasskeyRepository } from "$lib/server/prisma";
+import { type IOAuthAccountRepository, type IPasskeyRepository, type IUserRepository } from "$lib/server/prisma";
+
+import type { IdentService } from "./internal/IdentService";
 
 enum TokenPermission {
     APP = "APP",
@@ -166,12 +168,69 @@ abstract class AuthService {
     }
 }
 
+export class ExternalAuthService extends AuthService {
+    constructor(
+        private readonly oauthRepository: IOAuthAccountRepository,
+        private readonly userRepository: IUserRepository,
+        private readonly identService: IdentService
+    ) {
+        super();
+    }
+
+    public async signIn(serviceToken: string): Promise<string> {
+        const profile = await this.identService.getProfile(serviceToken);
+        const externalUid = profile.uid;
+        if (!externalUid) {
+            throw new Error("Invalid service token: UID not found.");
+        }
+
+        const account = await this.oauthRepository.findUnique({
+            where: {
+                externalUid: externalUid,
+            },
+            include: {
+                user: true,
+            },
+        });
+
+
+        if (account && account.user) {
+            console.log(`User ${externalUid} == ${account.user.id} already exists`);
+
+            // Update user profile
+            // 名前が変わっている可能性があるので更新する
+            await this.userRepository.update({ where: { id: account.user.id }, data: {
+                name: profile.displayName,
+            }});
+
+            return this.generateAppToken(account.user.id, new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)); // 1 week
+        } else {
+            console.log(`User ${externalUid} does not exist, creating user`);
+
+            // Create new user
+            const created = await this.userRepository.create({ data: { name: profile.displayName } });
+            this.oauthRepository.create({
+                data: {
+                    externalUid: externalUid,
+                    user: {
+                        connect: {
+                            id: created.id  
+                        }
+                    }
+                }
+            });
+
+            return this.generateAppToken(created.id , new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)); // 1 week
+        }
+    }
+}
+
 /*
     PasskeyAuthService provides methods to authenticate users with WebAuthn.
     This class depends on the PasskeyRepository to store the user's passkeys.
 */
 export class PasskeyAuthService extends AuthService {
-    private readonly rpName = "Myurion Notes";
+    private readonly rpName = "Twilight Cloud";
     private readonly rpId = process.env.RP_ID || "localhost";
     private readonly origin = process.env.APP_URL || "http://localhost:5173";
 
@@ -220,7 +279,6 @@ export class PasskeyAuthService extends AuthService {
         if (!tokenData.challenge) {
             throw new Error("Challenge not found in decrypted token. THIS IS A BUG OR LEAK OF SERVER SECRET KEY.");
         }
-
 
 
         const { verified, registrationInfo } = await verifyRegistrationResponse({

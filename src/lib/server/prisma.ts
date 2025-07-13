@@ -22,6 +22,9 @@ const prisma = new PrismaRepository();
 export const userRepository = prisma.user;
 export type IUserRepository = typeof userRepository
 
+export const oAuthAccountRepository = prisma.oAuthAccount;
+export type IOAuthAccountRepository = typeof oAuthAccountRepository
+
 export const passkeyRepository = prisma.passkey;
 export type IPasskeyRepository = typeof passkeyRepository
 
