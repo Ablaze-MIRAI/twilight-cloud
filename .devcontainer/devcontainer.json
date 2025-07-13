@@ -22,7 +22,8 @@
                 "dbaeumer.vscode-eslint",
                 "EditorConfig.EditorConfig",
                 "vitest.explorer",
-                "ms-playwright.playwright"
+                "ms-playwright.playwright",
+                "prisma.prisma"
             ],
             "settings": {
                 "editor.linkedEditing": true,
