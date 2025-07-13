@@ -13,12 +13,21 @@ model User {
   id                 String         @id @default(cuid())
   createdAt          DateTime       @default(now())
   name               String?
+  oauth2Ids          OAuthAccounts[]
   passkeys           Passkey[]
   noteCategories     NoteCategory[]
   notes              Note[]
   files              Media[]
   quickNoteContent   String?
   quickNoteUpdatedAt DateTime?
+}
+
+model OAuthAccounts {
+  id                 String    @id @default(cuid())
+  createdAt          DateTime  @default(now())
+  externalUid        String
+  user               User      @relation(fields: [userId], references: [id])
+  userId             String
 }
 
 model Passkey {
