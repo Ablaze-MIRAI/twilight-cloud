@@ -43,8 +43,12 @@ interface ChallengeTokenClaims extends TokenClaims {
     Tokens are encrypted with AES-256-CBC and authenticated with HMAC-SHA384.
 */
 abstract class AuthService {
-    private readonly secretKey = crypto.randomBytes(32);
-    private readonly challengeSecretKey = crypto.randomBytes(32);
+    private readonly secretKey = process.env.AUTH_SECRET_KEY 
+        ? Buffer.from(process.env.AUTH_SECRET_KEY, "base64") 
+        : crypto.randomBytes(32);
+    private readonly challengeSecretKey = process.env.CHALLENGE_SECRET_KEY 
+        ? Buffer.from(process.env.CHALLENGE_SECRET_KEY, "base64") 
+        : crypto.randomBytes(32);
 
     private encrypt(data: string, key: Buffer): string {
         const iv = crypto.randomBytes(16); // CBCでは16バイトのIVが必要
