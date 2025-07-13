@@ -12,8 +12,8 @@ export const passkeyAuthService = new PasskeyAuthService(passkeyRepository);
 
 
 const appUrl = process.env.APP_URL || "http://localhost:5173";
-const googleClientId = process.env.GOOGLE_CLIENT_ID || "";
-const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || "";
+const googleClientId = process.env.OAUTH2_GOOGLE_CLIENT_ID || "";
+const googleClientSecret = process.env.OAUTH2_GOOGLE_CLIENT_SECRET || "";
 
 const googleOAuth2RedirectUrl = `${appUrl}/auth/google/callback`;
 const googleOAuth2CodeVerifier = generateCodeVerifier();
