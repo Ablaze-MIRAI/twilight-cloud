@@ -15,8 +15,8 @@ export const errorHandler = new Elysia({ aot: false, precompile: true })
         }
 
         if (code == 401) {
-            // なぜかset.status = 401が型エラーになる
-            return new Response("Unauthorized", { status: 401 });
+            set.status = 401;
+            return "Unauthorized";
         }
 
         // AuthErrorは401にする
