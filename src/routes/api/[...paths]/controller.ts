@@ -6,6 +6,8 @@ import { NoteService } from "$lib/server/services/NoteService";
 import { UserService } from "$lib/server/services/UserService";
 import { GoogleIdentService } from "$lib/server/services/internal/IdentService";
 
+import { errorHandler } from "@/middlewares/ErrorHandler";
+
 
 const userService = new UserService(userRepository);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -15,6 +17,7 @@ const passkeyAuthService = new PasskeyAuthService(passkeyRepository);
 const noteService = new NoteService(noteRepository, noteCategoryRepository);    
 
 export const apiController = new Elysia({ prefix: "/api", aot: false, precompile: true })
+    .use(errorHandler)
     .derive(({ cookie: { token } }) => {
         // Auth middleware
         if (!token || !token.value) {

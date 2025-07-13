@@ -5,6 +5,8 @@ import { ExternalAuthService, PasskeyAuthService } from "$lib/server/services/Au
 import { UserService } from "$lib/server/services/UserService";
 import { GoogleIdentService } from "$lib/server/services/internal/IdentService";
 
+import { errorHandler } from "@/middlewares/ErrorHandler";
+
 
 const userService = new UserService(userRepository);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -12,6 +14,7 @@ const googleExternalAuthService = new ExternalAuthService(oAuthAccountRepository
 const passkeyAuthService = new PasskeyAuthService(passkeyRepository);
 
 export const authController = new Elysia({ prefix: "/auth", aot: false, precompile: true })
+    .use(errorHandler)
     .post("/register-request", async ({ body, cookie: { challengeSession } }) => {
         const user = await userService.createUser({ name: body.displayName });
         const res = await passkeyAuthService.genRegisterChallenge(user.id, body.displayName);
