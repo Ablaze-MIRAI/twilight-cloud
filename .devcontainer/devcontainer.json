@@ -1,11 +1,11 @@
 {
     "name": "Twilight Dev",
-    "image": "node:24",
+    "dockerComposeFile": "docker-compose.yml",
+	"service": "app",
     "features": {
         "ghcr.io/devcontainers-extra/features/pnpm:2": {}
     },
-    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
-    "workspaceFolder": "/workspace",
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
     "remoteUser": "node",
     "overrideCommand": true,
     "customizations": {
