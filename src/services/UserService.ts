@@ -1,5 +1,7 @@
-import { type IUserRepository } from "$lib/server/prisma";
 import { type User, Prisma } from "@prisma/client";
+
+import { type IUserRepository } from "@/prisma";
+
 
 export class UserService {
     constructor(

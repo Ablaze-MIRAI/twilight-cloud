@@ -1,7 +1,7 @@
 import { PrismockClient } from "prismock";
 import { describe, it, expect, afterEach } from "vitest";
 
-import { NoteService } from "$lib/server/services/NoteService";
+import { NoteService } from "@/services/NoteService";
 
 describe("NoteService test", async () => {
     const prismock = new PrismockClient();

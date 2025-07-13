@@ -1,11 +1,10 @@
 import Elysia, { t } from "elysia";
 
-import { oAuthAccountRepository, passkeyRepository, userRepository } from "$lib/server/prisma";
-import { ExternalAuthService, PasskeyAuthService } from "$lib/server/services/AuthService";
-import { UserService } from "$lib/server/services/UserService";
-import { GoogleIdentService } from "$lib/server/services/internal/IdentService";
-
 import { errorHandler } from "@/middlewares/ErrorHandler";
+import { oAuthAccountRepository, passkeyRepository, userRepository } from "@/prisma";
+import { ExternalAuthService, PasskeyAuthService } from "@/services/AuthService";
+import { UserService } from "@/services/UserService";
+import { GoogleIdentService } from "@/services/internal/IdentService";
 
 
 const userService = new UserService(userRepository);

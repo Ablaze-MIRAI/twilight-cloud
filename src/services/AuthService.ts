@@ -13,9 +13,9 @@ import type {
 } from "@simplewebauthn/server";
 import { isoBase64URL } from "@simplewebauthn/server/helpers";
 
-import { type IOAuthAccountRepository, type IPasskeyRepository, type IUserRepository } from "$lib/server/prisma";
+import { type IOAuthAccountRepository, type IPasskeyRepository, type IUserRepository } from "@/prisma";
+import type { IdentService } from "@/services/internal/IdentService";
 
-import type { IdentService } from "./internal/IdentService";
 
 enum TokenPermission {
     APP = "APP",

@@ -2,7 +2,7 @@ import { randomBytes } from "node:crypto";
 
 import { describe, it, expect } from "vitest";
 
-import { UnsafeDebugAuthService } from "$lib/server/services/AuthService";
+import { UnsafeDebugAuthService } from "@/services/AuthService";
 
 
 describe("AuthService test", () => {
