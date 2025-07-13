@@ -24,7 +24,7 @@ const googleOAuth2 = new Google(
 );
 
 export const googleOAuth2Controller = new Elysia({prefix: "/auth/google"})
-    .get("", async ({ set, cookie: {state} }) => {
+    .get("", async ({ set, cookie: { state } }) => {
         if (!googleClientId || !googleClientSecret) {
             throw new Error("AuthError: Google OAuth2 is not configured");
         }
@@ -47,47 +47,42 @@ export const googleOAuth2Controller = new Elysia({prefix: "/auth/google"})
     })
 
     .get("/callback", async ({ set, cookie: { oAuthToken, state, token, linkAccountId }, query }) => {
-        try {
-            if (query.state !== state.value) {
-                throw new Error("AuthError: state does not match");
-            }
-
-            // Fetch Google API token
-            const tokens = await googleOAuth2.validateAuthorizationCode(query.code, googleOAuth2CodeVerifier);
-            const googleServiceToken = tokens.accessToken();
-
-            if (linkAccountId.value && token.value) {
-                const user = passkeyAuthService.decryptToken(token.value, false);
-                if (!user || user.uid !== linkAccountId.value) {
-                    throw new Error("AuthError: User ID does not match on linking account");
-                }
-
-                await googleExternalAuthService.linkAccount(googleServiceToken, user.uid);
-
-                // clear the linkAccountId cookie
-                linkAccountId.value = "";
-                linkAccountId.httpOnly = true;
-                linkAccountId.secure = true;
-                linkAccountId.sameSite = "strict";
-                linkAccountId.expires = new Date(0);
-                linkAccountId.path = "/auth/google/callback";
-            }
-
-            oAuthToken.value = await googleExternalAuthService.signIn(googleServiceToken);
-            oAuthToken.httpOnly = true;
-            oAuthToken.secure = true;
-            oAuthToken.sameSite = "strict";
-            oAuthToken.expires = new Date(Date.now() + 30 * 60 * 1000);
-            oAuthToken.path = "/api";
-
-            set.status = 302;
-            set.headers.location = "/";
-
-            return "OK";
-        } catch (e) {
-            console.log(e);
-            throw new Error("AuthError: Authentication failed");
+        if (query.state !== state.value) {
+            throw new Error("AuthError: state does not match");
         }
+
+        // Fetch Google API token
+        const tokens = await googleOAuth2.validateAuthorizationCode(query.code, googleOAuth2CodeVerifier);
+        const googleServiceToken = tokens.accessToken();
+
+        if (linkAccountId.value && token.value) {
+            const user = passkeyAuthService.decryptToken(token.value, false);
+            if (!user || user.uid !== linkAccountId.value) {
+                throw new Error("AuthError: User ID does not match on linking account");
+            }
+
+            await googleExternalAuthService.linkAccount(googleServiceToken, user.uid);
+
+            // clear the linkAccountId cookie
+            linkAccountId.value = "";
+            linkAccountId.httpOnly = true;
+            linkAccountId.secure = true;
+            linkAccountId.sameSite = "strict";
+            linkAccountId.expires = new Date(0);
+            linkAccountId.path = "/auth/google/callback";
+        }
+
+        oAuthToken.value = await googleExternalAuthService.signIn(googleServiceToken);
+        oAuthToken.httpOnly = true;
+        oAuthToken.secure = true;
+        oAuthToken.sameSite = "strict";
+        oAuthToken.expires = new Date(Date.now() + 30 * 60 * 1000);
+        oAuthToken.path = "/api";
+
+        set.status = 302;
+        set.headers.location = "/";
+
+        return "OK";
     }, {
         cookie: t.Object({
             state: t.String({
