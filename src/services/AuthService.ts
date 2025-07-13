@@ -43,10 +43,10 @@ interface ChallengeTokenClaims extends TokenClaims {
     Tokens are encrypted with AES-256-CBC and authenticated with HMAC-SHA384.
 */
 abstract class AuthService {
-    private readonly secretKey = process.env.AUTH_SECRET_KEY 
+    private readonly secretKey = process.env.AUTH_SECRET_KEY
         ? Buffer.from(process.env.AUTH_SECRET_KEY, "base64") 
         : crypto.randomBytes(32);
-    private readonly challengeSecretKey = process.env.CHALLENGE_SECRET_KEY 
+    private readonly challengeSecretKey = process.env.CHALLENGE_SECRET_KEY
         ? Buffer.from(process.env.CHALLENGE_SECRET_KEY, "base64") 
         : crypto.randomBytes(32);
 

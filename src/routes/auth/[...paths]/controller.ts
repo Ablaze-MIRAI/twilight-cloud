@@ -11,7 +11,7 @@ import { GoogleIdentService } from "@/services/internal/IdentService";
 const userService = new UserService(userRepository);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const googleExternalAuthService = new ExternalAuthService(oAuthAccountRepository, userRepository, new GoogleIdentService);
-const passkeyAuthService = new PasskeyAuthService(passkeyRepository);
+export const passkeyAuthService = new PasskeyAuthService(passkeyRepository);
 
 export const authController = new Elysia({ prefix: "/auth", aot: false, precompile: true })
     .onError(({ code: code, error, set }) => {

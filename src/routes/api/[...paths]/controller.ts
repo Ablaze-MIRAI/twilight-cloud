@@ -2,8 +2,10 @@ import Elysia, { t } from "elysia";
 
 import { Prisma } from "@prisma/client";
 
-import { noteCategoryRepository, noteRepository, oAuthAccountRepository, passkeyRepository, userRepository } from "@/prisma";
-import { ExternalAuthService, PasskeyAuthService } from "@/services/AuthService";
+import { noteCategoryRepository, noteRepository, oAuthAccountRepository, userRepository } from "@/prisma";
+// トークンの鍵を共通利用する必要があるので、authControllerからインポート
+import { passkeyAuthService } from "@/routes/auth/[...paths]/controller";
+import { ExternalAuthService } from "@/services/AuthService";
 import { NoteService } from "@/services/NoteService";
 import { UserService } from "@/services/UserService";
 import { GoogleIdentService } from "@/services/internal/IdentService";
@@ -12,7 +14,6 @@ import { GoogleIdentService } from "@/services/internal/IdentService";
 const userService = new UserService(userRepository);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const googleExternalAuthService = new ExternalAuthService(oAuthAccountRepository, userRepository, new GoogleIdentService);
-const passkeyAuthService = new PasskeyAuthService(passkeyRepository);
 
 const noteService = new NoteService(noteRepository, noteCategoryRepository);    
 
