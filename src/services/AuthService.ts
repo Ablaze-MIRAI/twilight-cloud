@@ -211,6 +211,10 @@ export class ExternalAuthService extends AuthService {
         } else {
             console.log(`User ${externalUid} does not exist, creating user`);
 
+            if (process.env.DISABLE_REG === "1") {
+                throw new Error("AuthError: Registration is disabled");
+            }
+
             // Create new user
             const created = await this.userRepository.create({ data: { name: profile.displayName } });
             this.oauthRepository.create({
@@ -225,6 +229,51 @@ export class ExternalAuthService extends AuthService {
             });
 
             return this.generateAppToken(created.id , new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)); // 1 week
+        }
+    }
+
+    public async linkAccount(serviceToken: string, uid: string): Promise<void> {
+        if (!uid || !serviceToken) {
+            throw new Error("Integrity check failed: may be caused by bug(s) or leak of credentials");
+        }
+
+        const profile = await this.identService.getProfile(serviceToken);
+        const externalUid = profile.uid;
+        if (!externalUid) {
+            throw new Error("Invalid service token: UID not found.");
+        }
+
+        const account = await this.oauthRepository.findUnique({
+            where: {
+                externalUid: externalUid,
+            },
+        });
+
+        if (account) {
+            throw new Error("Account already linked.");
+        }
+
+        // Link account
+        const linked = await this.oauthRepository.create({
+            data: {
+                externalUid: externalUid,
+                user: {
+                    connect: {
+                        id: uid
+                    }
+                }
+            }
+        });
+
+        if (linked.userId !== uid) {
+            // rollback
+            await this.oauthRepository.delete({
+                where: {
+                    id: linked.id
+                }
+            });
+
+            throw new Error("Integrity check failed: may be caused by bug(s) or leak of credentials");
         }
     }
 }
