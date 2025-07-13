@@ -1,15 +1,9 @@
 {
-    "name": "Myurion Dev",
-    "image": "node:22",
+    "name": "Twilight Dev",
+    "image": "node:24",
     "features": {
         "ghcr.io/devcontainers-extra/features/pnpm:2": {}
     },
-    "runArgs": [
-        "-p",
-        "127.0.0.1:5173:5173",
-        "--user",
-        "node"
-    ],
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
     "workspaceFolder": "/workspace",
     "remoteUser": "node",
