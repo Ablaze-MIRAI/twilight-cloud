@@ -2,8 +2,8 @@ import Elysia from "elysia";
 
 import { Prisma } from "@prisma/client";
 
-export const errorHandler = new Elysia({ aot: false, precompile: true })
-    .onError(({ code, error, set }) => {
+export const errorHandler = new Elysia({ name: "ErrorHandler" })
+    .onError(({ code: code, error, set }) => {
         if (code == "NOT_FOUND") {
             set.status = 404;
             return "Not found";
