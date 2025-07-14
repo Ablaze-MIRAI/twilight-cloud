@@ -107,16 +107,27 @@ export const authController = new Elysia({ prefix: "/auth", aot: false, precompi
         return res.options;
     })
 
-    .post("/verify-login", async ({ body, cookie: { challengeSession, token } }) => {
+    .post("/verify-login", async ({ body, cookie: { challengeSession, token, tokenForLinking } }) => {
         const encryptedChallenge = challengeSession.value;
         const result = await passkeyAuthService.verifyLogin(encryptedChallenge, body as unknown);
 
-        token.value = result.token;
-        token.httpOnly = true;
-        token.secure = true;
-        token.sameSite = "strict";
-        token.expires = new Date(Date.now() + 30 * 60 * 1000);
-        token.path = "/api";
+        token.set({
+            value: result.token,
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            expires: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
+            path: "/api"
+        });
+
+        tokenForLinking.set({
+            value: result.token,
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            expires: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
+            path: "/auth"
+        });
 
         return result.uid;
     }, {

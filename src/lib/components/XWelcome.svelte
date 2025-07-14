@@ -38,6 +38,8 @@
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("oAuth", "google");
 
+        document.cookie = "auth=oAuthGoogle; SameSite=Strict; Secure";
+
         // 15分後に再認証
         // 実際のトークンの有効期限は60分だが、編集中にトークンが切れて保存できなくなることを防止するために15分おきに再認証させる
         localStorage.setItem(

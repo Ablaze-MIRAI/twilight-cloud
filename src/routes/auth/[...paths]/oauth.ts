@@ -2,14 +2,15 @@ import Elysia, { t } from "elysia";
 
 import { generateCodeVerifier, generateState, Google } from "arctic";
 
-import { oAuthAccountRepository, passkeyRepository, userRepository } from "@/prisma";
-import { ExternalAuthService, PasskeyAuthService } from "@/services/AuthService";
+import { passkeyAuthService } from "./controller";
+
+import { oAuthAccountRepository, userRepository } from "@/prisma";
+import { ExternalAuthService } from "@/services/AuthService";
 import { GoogleIdentService } from "@/services/internal/IdentService";
 
 
-export const googleExternalAuthService = new ExternalAuthService(oAuthAccountRepository, userRepository, new GoogleIdentService);
-export const passkeyAuthService = new PasskeyAuthService(passkeyRepository);
 
+export const googleExternalAuthService = new ExternalAuthService(oAuthAccountRepository, userRepository, new GoogleIdentService);
 
 const appUrl = process.env.APP_URL || "http://localhost:5173";
 const googleClientId = process.env.OAUTH2_GOOGLE_CLIENT_ID || "";
@@ -24,24 +25,29 @@ const googleOAuth2 = new Google(
 );
 
 export const googleOAuth2Controller = new Elysia({prefix: "/google"})
-    .get("", async ({ set, cookie: { state, linkAccountId, token } }) => {
+    .get("", async ({ set, cookie: { state, linkAccountId, tokenForLinking } }) => {
         if (!googleClientId || !googleClientSecret) {
             throw new Error("AuthError: Google OAuth2 is not configured");
         }
 
-        const newState = {
-            arcticToken: generateState(),
-            linkAccountId: linkAccountId.value,
-            token: token.value
-        };
+        if (linkAccountId.value && !tokenForLinking.value) {
+            throw new Error("AuthError: token is required for linking account");
+        }
+ 
+        const newState = googleExternalAuthService.generateLinkState(generateState(), linkAccountId.value, tokenForLinking.value);
 
-        const url = googleOAuth2.createAuthorizationURL(JSON.stringify(newState), googleOAuth2CodeVerifier, ["openid", "profile"]);
+        const url = googleOAuth2.createAuthorizationURL(newState, googleOAuth2CodeVerifier, ["openid", "profile"]);
         state.set({
             httpOnly: true,
             secure: true,
             maxAge: 60 * 10,
             path: "/",
             value: newState
+        });
+
+        linkAccountId.set({
+            value: "",
+            maxAge: 0,
         });
 
         set.status = 307;
@@ -59,11 +65,7 @@ export const googleOAuth2Controller = new Elysia({prefix: "/google"})
             throw new Error("AuthError: state does not match");
         }
         
-        const parsedState = JSON.parse(state.value) as { 
-            arcticToken: string, 
-            linkAccountId: string | undefined,
-            token: string | undefined
-        };
+        const parsedState = googleExternalAuthService.validateLinkState(query.state);
 
         // Fetch Google API token
         const tokens = await googleOAuth2.validateAuthorizationCode(query.code, googleOAuth2CodeVerifier);
@@ -81,7 +83,15 @@ export const googleOAuth2Controller = new Elysia({prefix: "/google"})
             }
 
             await googleExternalAuthService.linkAccount(googleServiceToken, user.uid);
-            
+
+            // clear related cookies
+            state.set({
+                value: "",
+                httpOnly: true,
+                secure: true,
+                maxAge: 0,
+            });
+
             return "Account linked successfully";
         }
 

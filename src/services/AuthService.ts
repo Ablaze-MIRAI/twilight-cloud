@@ -225,6 +225,41 @@ export class ExternalAuthService extends AuthService {
         }
     }
 
+    public generateLinkState(arcticToken: string, linkAccountId?: string, token?: string): string {
+        if (!arcticToken) {
+            throw new Error("AuthError: arcticToken is not set");
+        }
+
+        const state = {
+            arcticToken,
+            linkAccountId: linkAccountId ? linkAccountId : undefined,
+            token: token ? token : undefined
+        };
+
+        const challenge = JSON.stringify(state);
+
+        // generate challenge token
+        return this.generateChallengeToken(linkAccountId ?? "ANON", challenge, new Date(Date.now() + 60 * 10)); // 10 minutes
+    }
+
+    public validateLinkState(encryptedState: string): { arcticToken: string, linkAccountId: string | undefined, token: string | undefined } {
+        const tokenData = this.decryptToken(encryptedState, true);
+        if (!tokenData) {
+            throw new Error("AuthError: Invalid state token");
+        }
+
+        if (!tokenData.challenge) {
+            throw new Error("AuthError: Challenge not found in decrypted token. THIS IS A BUG OR LEAK OF SERVER SECRET KEY.");
+        }
+
+        const parsedState = JSON.parse(tokenData.challenge) as { arcticToken: string, linkAccountId: string | undefined, token: string | undefined };
+        if (!parsedState.arcticToken) {
+            throw new Error("Integrity check failed: may be caused by bug(s) or leak of credentials");
+        }
+
+        return parsedState;
+    }  
+
     public async linkAccount(serviceToken: string, uid: string): Promise<void> {
         if (!uid || !serviceToken) {
             throw new Error("Integrity check failed: may be caused by bug(s) or leak of credentials");
