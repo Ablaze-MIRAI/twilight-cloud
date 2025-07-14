@@ -2,6 +2,8 @@ import Elysia, { t } from "elysia";
 
 import { Prisma } from "@prisma/client";
 
+import { googleOAuth2Controller } from "./oauth";
+
 import { oAuthAccountRepository, passkeyRepository, userRepository } from "@/prisma";
 import { ExternalAuthService, PasskeyAuthService } from "@/services/AuthService";
 import { UserService } from "@/services/UserService";
@@ -52,6 +54,8 @@ export const authController = new Elysia({ prefix: "/auth", aot: false, precompi
         set.status = 500;
         return "An unexpected error occurred. The request was aborted.";
     })
+
+    .use(googleOAuth2Controller)
 
     .post("/register-request", async ({ body, cookie: { challengeSession } }) => {
         if (process.env.DISABLE_REG === "1") {
