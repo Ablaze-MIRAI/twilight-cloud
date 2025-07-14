@@ -1,11 +1,25 @@
 import { startAuthentication } from "@simplewebauthn/browser";
 
 const oAuthStatus = localStorage.getItem("oAuth");
+const oAuthTryCount = Number(localStorage.getItem("oAuthTryCount")) || 0;
+const lastOAuthTime = localStorage.getItem("lastOAuthTime");
 
 export async function signIn(expectedUserId?: string): Promise<void> {
     if (oAuthStatus === "google") {
+        // サーバー側のバグなどでoAuthで無限リダイレクトすることがあるのでその対策
+        if (lastOAuthTime && new Date(lastOAuthTime).getTime() > Date.now() - 60 * 100 && oAuthTryCount >= 3) {
+            localStorage.removeItem("isLoggedIn");
+            alert("Google OAuth authentication failed multiple times. Logging out.");
+            location.reload();
+            return;
+        }
+
+        localStorage.setItem("oAuthTryCount", (oAuthTryCount + 1).toString());
+        localStorage.setItem("lastOAuthTime", new Date().toISOString());
+
         document.cookie = "auth=oAuthGoogle; SameSite=Strict; Secure";
         location.href = "/auth/google";
+        
         return;
     } else {
         document.cookie = "auth=passkey; SameSite=Strict; Secure";

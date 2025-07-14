@@ -2,6 +2,7 @@ import Elysia, { t } from "elysia";
 
 import { Prisma } from "@prisma/client";
 
+// eslint-disable-next-line import/no-cycle
 import { googleOAuth2Controller } from "./oauth";
 
 import { oAuthAccountRepository, passkeyRepository, userRepository } from "@/prisma";
@@ -11,8 +12,8 @@ import { GoogleIdentService } from "@/services/internal/IdentService";
 
 
 const userService = new UserService(userRepository);
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const googleExternalAuthService = new ExternalAuthService(oAuthAccountRepository, userRepository, new GoogleIdentService);
+
+export const googleExternalAuthService = new ExternalAuthService(oAuthAccountRepository, userRepository, new GoogleIdentService);
 export const passkeyAuthService = new PasskeyAuthService(passkeyRepository);
 
 export const authController = new Elysia({ prefix: "/auth", aot: false, precompile: true })

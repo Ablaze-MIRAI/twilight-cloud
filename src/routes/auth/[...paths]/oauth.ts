@@ -2,19 +2,14 @@ import Elysia, { t } from "elysia";
 
 import { generateCodeVerifier, generateState, Google } from "arctic";
 
-import { passkeyAuthService } from "./controller";
+// eslint-disable-next-line import/no-cycle
+import { googleExternalAuthService, passkeyAuthService } from "./controller";
 
-import { oAuthAccountRepository, userRepository } from "@/prisma";
-import { ExternalAuthService } from "@/services/AuthService";
-import { GoogleIdentService } from "@/services/internal/IdentService";
-
-
-
-export const googleExternalAuthService = new ExternalAuthService(oAuthAccountRepository, userRepository, new GoogleIdentService);
 
 const appUrl = process.env.APP_URL || "http://localhost:5173";
 const googleClientId = process.env.OAUTH2_GOOGLE_CLIENT_ID || "";
 const googleClientSecret = process.env.OAUTH2_GOOGLE_CLIENT_SECRET || "";
+
 
 const googleOAuth2RedirectUrl = `${appUrl}/auth/google/callback`;
 const googleOAuth2CodeVerifier = generateCodeVerifier();
@@ -41,7 +36,7 @@ export const googleOAuth2Controller = new Elysia({prefix: "/google"})
             httpOnly: true,
             secure: true,
             maxAge: 60 * 10,
-            path: "/",
+            path: "/auth/google/callback",
             value: newState
         });
 

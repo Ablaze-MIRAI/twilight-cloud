@@ -4,8 +4,7 @@ import { Prisma } from "@prisma/client";
 
 import { noteCategoryRepository, noteRepository, userRepository } from "@/prisma";
 // トークンの鍵を共通利用する必要があるので、authControllerからインポート
-import { passkeyAuthService } from "@/routes/auth/[...paths]/controller";
-import { googleExternalAuthService } from "@/routes/auth/[...paths]/oauth";
+import { passkeyAuthService, googleExternalAuthService } from "@/routes/auth/[...paths]/controller";
 import { NoteService } from "@/services/NoteService";
 import { UserService } from "@/services/UserService";
 
