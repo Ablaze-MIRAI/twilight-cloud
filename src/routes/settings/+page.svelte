@@ -1,7 +1,9 @@
 <script lang="ts">
-    import { Button } from "@/lib/components/ui/button";
-    import type { User } from "@prisma/client";
     import { IconKey, IconBrandGoogleFilled } from "@tabler/icons-svelte";
+
+    import type { User } from "@prisma/client";
+
+    import { Button } from "@/lib/components/ui/button";
 
     const linkGoogleAccount = async () => {
         const res = await fetch("/api/me");
