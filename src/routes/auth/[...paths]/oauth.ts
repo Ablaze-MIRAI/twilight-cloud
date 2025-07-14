@@ -7,7 +7,7 @@ import { ExternalAuthService, PasskeyAuthService } from "@/services/AuthService"
 import { GoogleIdentService } from "@/services/internal/IdentService";
 
 
-const googleExternalAuthService = new ExternalAuthService(oAuthAccountRepository, userRepository, new GoogleIdentService);
+export const googleExternalAuthService = new ExternalAuthService(oAuthAccountRepository, userRepository, new GoogleIdentService);
 export const passkeyAuthService = new PasskeyAuthService(passkeyRepository);
 
 
@@ -23,15 +23,19 @@ const googleOAuth2 = new Google(
     googleOAuth2RedirectUrl
 );
 
-export const googleOAuth2Controller = new Elysia({prefix: "/auth/google"})
-    .get("", async ({ set, cookie: { state } }) => {
+export const googleOAuth2Controller = new Elysia({prefix: "/google"})
+    .get("", async ({ set, cookie: { state, linkAccountId, token } }) => {
         if (!googleClientId || !googleClientSecret) {
             throw new Error("AuthError: Google OAuth2 is not configured");
         }
 
-        const newState = generateState();
+        const newState = {
+            arcticToken: generateState(),
+            linkAccountId: linkAccountId.value,
+            token: token.value
+        };
 
-        const url = googleOAuth2.createAuthorizationURL(newState, googleOAuth2CodeVerifier, ["openid", "profile"]);
+        const url = googleOAuth2.createAuthorizationURL(JSON.stringify(newState), googleOAuth2CodeVerifier, ["openid", "profile"]);
         state.set({
             httpOnly: true,
             secure: true,
@@ -46,38 +50,49 @@ export const googleOAuth2Controller = new Elysia({prefix: "/auth/google"})
         return;
     })
 
-    .get("/callback", async ({ set, cookie: { oAuthToken, state, token, linkAccountId }, query }) => {
+    .get("/callback", async ({ set, cookie: { oAuthToken, state }, query }) => {
+        if (!state.value) {
+            throw new Error("AuthError: state cookie is not set");
+        }
+
         if (query.state !== state.value) {
             throw new Error("AuthError: state does not match");
         }
+        
+        const parsedState = JSON.parse(state.value) as { 
+            arcticToken: string, 
+            linkAccountId: string | undefined,
+            token: string | undefined
+        };
 
         // Fetch Google API token
         const tokens = await googleOAuth2.validateAuthorizationCode(query.code, googleOAuth2CodeVerifier);
         const googleServiceToken = tokens.accessToken();
 
-        if (linkAccountId.value && token.value) {
-            const user = passkeyAuthService.decryptToken(token.value, false);
-            if (!user || user.uid !== linkAccountId.value) {
-                throw new Error("AuthError: User ID does not match on linking account");
+        if (parsedState.linkAccountId) {
+            console.log("Linking account with Google OAuth2");
+            if (!parsedState.token) {
+                throw new Error("AuthError: token is not set");
+            }
+
+            const user = passkeyAuthService.decryptToken(parsedState.token, false);
+            if (!user) {
+                throw new Error("AuthError: Failed to linking account");
             }
 
             await googleExternalAuthService.linkAccount(googleServiceToken, user.uid);
-
-            // clear the linkAccountId cookie
-            linkAccountId.value = "";
-            linkAccountId.httpOnly = true;
-            linkAccountId.secure = true;
-            linkAccountId.sameSite = "strict";
-            linkAccountId.expires = new Date(0);
-            linkAccountId.path = "/auth/google/callback";
+            
+            return "Account linked successfully";
         }
 
-        oAuthToken.value = await googleExternalAuthService.signIn(googleServiceToken);
-        oAuthToken.httpOnly = true;
-        oAuthToken.secure = true;
-        oAuthToken.sameSite = "strict";
-        oAuthToken.expires = new Date(Date.now() + 30 * 60 * 1000);
-        oAuthToken.path = "/api";
+        oAuthToken.set({
+            value: await googleExternalAuthService.signIn(googleServiceToken),
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            expires: new Date(Date.now() + 30 * 60 * 1000), 
+            path: "/api"
+        });
 
         set.status = 302;
         set.headers.location = "/";

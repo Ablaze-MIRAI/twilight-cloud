@@ -200,13 +200,6 @@ export class ExternalAuthService extends AuthService {
 
         if (account && account.user) {
             console.log(`User ${externalUid} == ${account.user.id} already exists`);
-
-            // Update user profile
-            // 名前が変わっている可能性があるので更新する
-            await this.userRepository.update({ where: { id: account.user.id }, data: {
-                name: profile.displayName,
-            }});
-
             return this.generateAppToken(account.user.id, new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)); // 1 week
         } else {
             console.log(`User ${externalUid} does not exist, creating user`);
@@ -217,7 +210,7 @@ export class ExternalAuthService extends AuthService {
 
             // Create new user
             const created = await this.userRepository.create({ data: { name: profile.displayName } });
-            this.oauthRepository.create({
+            await this.oauthRepository.create({
                 data: {
                     externalUid: externalUid,
                     user: {
@@ -264,6 +257,8 @@ export class ExternalAuthService extends AuthService {
                 }
             }
         });
+
+        console.log(`Linked account ${externalUid} to user ${uid}`);
 
         if (linked.userId !== uid) {
             // rollback

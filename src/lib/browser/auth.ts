@@ -1,6 +1,16 @@
 import { startAuthentication } from "@simplewebauthn/browser";
 
+const oAuthStatus = localStorage.getItem("oAuth");
+
 export async function signIn(expectedUserId?: string): Promise<void> {
+    if (oAuthStatus === "google") {
+        document.cookie = "auth=oAuthGoogle; SameSite=Strict; Secure";
+        location.href = "/auth/google";
+        return;
+    } else {
+        document.cookie = "auth=passkey; SameSite=Strict; Secure";
+    }
+
     const response = await fetch("/auth/login-request");
     const loginOptions = await response.json();
 

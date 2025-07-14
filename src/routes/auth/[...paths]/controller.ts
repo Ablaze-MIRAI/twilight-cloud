@@ -127,13 +127,22 @@ export const authController = new Elysia({ prefix: "/auth", aot: false, precompi
         })
     })
 
-    .get("/logout", async ({ cookie: { token } }) => {
-        token.value = "";
-        token.httpOnly = true;
-        token.secure = true;
-        token.sameSite = "strict";
-        token.expires = new Date(0);
-        token.path = "/api";
+    .get("/logout", async ({ cookie: { token, oAuthToken } }) => {
+        token.set({
+            value: "",
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            expires: new Date(0),
+        });
+
+        oAuthToken.set({
+            value: "",
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            expires: new Date(0),
+        });
 
         return {
             loggedOut: true

@@ -17,7 +17,7 @@
     <h2 class="text-2xl">Settings</h2>
     <div class="m-6">
         <h3 class="text-xl flex items-center"><IconKey class="mr-3" />Authenticate with External Accounts</h3>
-        <Button class="h-6" variant="outline" onclick={() => linkGoogleAccount()}>
+        <Button class="mt-6" variant="outline" onclick={linkGoogleAccount}>
             <IconBrandGoogleFilled />
             Google
         </Button>

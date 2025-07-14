@@ -2,18 +2,15 @@ import Elysia, { t } from "elysia";
 
 import { Prisma } from "@prisma/client";
 
-import { noteCategoryRepository, noteRepository, oAuthAccountRepository, userRepository } from "@/prisma";
+import { noteCategoryRepository, noteRepository, userRepository } from "@/prisma";
 // トークンの鍵を共通利用する必要があるので、authControllerからインポート
 import { passkeyAuthService } from "@/routes/auth/[...paths]/controller";
-import { ExternalAuthService } from "@/services/AuthService";
+import { googleExternalAuthService } from "@/routes/auth/[...paths]/oauth";
 import { NoteService } from "@/services/NoteService";
 import { UserService } from "@/services/UserService";
-import { GoogleIdentService } from "@/services/internal/IdentService";
 
 
 const userService = new UserService(userRepository);
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const googleExternalAuthService = new ExternalAuthService(oAuthAccountRepository, userRepository, new GoogleIdentService);
 
 const noteService = new NoteService(noteRepository, noteCategoryRepository);    
 
@@ -61,8 +58,20 @@ export const apiController = new Elysia({ prefix: "/api", aot: false, precompile
         set.status = 500;
         return "An unexpected error occurred. The request was aborted.";
     })
-    .derive(({ cookie: { token } }) => {
+
+    .derive(({ cookie: { auth, token, oAuthToken } }) => {
         // Auth middleware
+        if (oAuthToken && oAuthToken.value && auth && auth.value === "oAuthGoogle") {
+            const user = googleExternalAuthService.decryptToken(oAuthToken.value, false);
+            if (!user) {
+                throw new Error("AuthError: OAuth token is invalid");
+            }
+
+            return {
+                uid: user.uid,
+            };
+        }
+
         if (!token || !token.value) {
             throw new Error("AuthError: token not found");
         }
@@ -76,6 +85,7 @@ export const apiController = new Elysia({ prefix: "/api", aot: false, precompile
             uid: user.uid,
         };
     })
+
     .get("/me", async ({ uid }) => {
         return await userService.getUserById(uid);
     })

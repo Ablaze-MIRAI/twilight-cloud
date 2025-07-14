@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { IconBrandGoogleFilled } from "@tabler/icons-svelte";
     import { LoaderCircle } from "lucide-svelte";
     import { toast } from "svelte-sonner";
 
@@ -12,7 +13,7 @@
     export { className as class };
 
     let isLoading = false;
-    async function onSubmit() {
+    const signInWithPasskey = async () => {
         isLoading = true;
         try {
             await signIn();
@@ -31,7 +32,22 @@
 
             isLoading = false;
         }
-    }
+    };
+
+    const signInWithGoogle = async () => {
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("oAuth", "google");
+
+        // 15分後に再認証
+        // 実際のトークンの有効期限は60分だが、編集中にトークンが切れて保存できなくなることを防止するために15分おきに再認証させる
+        localStorage.setItem(
+            "nextAuthenticationTime",
+            (Date.now() + 15 * 60 * 1000).toString(),
+        );
+
+        document.cookie = "oauth=google; SameSite=Strict; Secure";
+        location.href = "/auth/google";
+    };  
 
     let signUpDialogIsOpen = false;
     async function onSignUp() {
@@ -76,16 +92,22 @@
                 </p>
             </div>
             <div class={cn("grid gap-6", className)} {...$$restProps}>
-                <form on:submit|preventDefault={onSubmit}>
-                    <div class="grid gap-2">
-                        <Button type="submit" disabled={isLoading} id="button-sign-in-with-passkey">
-                            {#if isLoading}
-                                <LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
-                            {/if}
-                            Sign In with Passkey
-                        </Button>
-                    </div>
-                </form>
+                <div class="grid gap-2">
+                    <Button disabled={isLoading} id="button-sign-in-with-passkey" onclick={signInWithPasskey}>
+                        {#if isLoading}
+                            <LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
+                        {/if}
+                        Sign In with Passkey
+                    </Button>
+                    <Button disabled={isLoading} variant="outline" onclick={signInWithGoogle} id="button-sign-in-with-google">
+                        {#if isLoading} 
+                            <LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
+                        {:else}
+                            <IconBrandGoogleFilled />
+                        {/if}
+                        Sign In with Google
+                    </Button>
+                </div>
             </div>
             <p class="text-muted-foreground px-8 text-center text-sm">
                 This software uses other open-source software.
