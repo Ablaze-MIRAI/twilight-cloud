@@ -17,7 +17,8 @@
                 "EditorConfig.EditorConfig",
                 "vitest.explorer",
                 "ms-playwright.playwright",
-                "prisma.prisma"
+                "prisma.prisma",
+                "ckolkman.vscode-postgres"
             ],
             "settings": {
                 "editor.linkedEditing": true,
