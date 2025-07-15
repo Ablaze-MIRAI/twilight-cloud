@@ -89,6 +89,30 @@ export const apiController = new Elysia({ prefix: "/api", aot: false, precompile
         return await userService.getUserById(uid);
     })
 
+    .get("/me/logout", async ({ cookie: { token, oAuthToken } }) => {
+        token.set({
+            value: "",
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            maxAge: 0,
+            path: "/api"
+        });
+
+        oAuthToken.set({
+            value: "",
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            maxAge: 0,
+            path: "/api"
+        });
+
+        return {
+            ok: true
+        };
+    })
+
     .put("/me/quick-note", async ({ uid, body }) => {
         await userService.updateQuickNote(uid, body.content);
         return {

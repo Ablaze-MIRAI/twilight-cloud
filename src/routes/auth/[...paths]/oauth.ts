@@ -86,6 +86,7 @@ export const googleOAuth2Controller = new Elysia({prefix: "/google"})
                 httpOnly: true,
                 secure: true,
                 maxAge: 0,
+                path: "/auth/google/callback",
             });
 
             return "Account linked successfully";
@@ -98,6 +99,14 @@ export const googleOAuth2Controller = new Elysia({prefix: "/google"})
             sameSite: "strict",
             expires: new Date(Date.now() + 30 * 60 * 1000), 
             path: "/api"
+        });
+
+        state.set({
+            value: "",
+            httpOnly: true,
+            secure: true,
+            maxAge: 0,
+            path: "/auth/google/callback",
         });
 
         set.status = 302;

@@ -41,13 +41,15 @@
 
     const signOut = async () => {
         // Remove cookies
+        await callApi("/api/me/logout", "GET");
+        await callApi("/auth/logout", "GET");
+
         document.cookie.split(";").forEach((cookie) => {
             const cookieName = cookie.split("=")[0].trim();
             document.cookie = `${cookieName}=; max-age=0; path=/`;
         });
 
-        await callApi("/auth/logout", "GET");
-        localStorage.removeItem("isLoggedIn");
+        localStorage.clear();
 
         location.reload();
     };
