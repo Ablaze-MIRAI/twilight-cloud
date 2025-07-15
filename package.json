@@ -62,7 +62,7 @@
     "sass-embedded": "^1.87.0",
     "svelte": "^5.22.6",
     "svelte-awesome-color-picker": "^4.0.2",
-    "svelte-check": "^4.1.5",
+    "svelte-check": "^4.2.2",
     "svelte-sonner": "^0.3.28",
     "svelte-tiptap": "^2.1.0",
     "tailwind-merge": "^2.5.5",
