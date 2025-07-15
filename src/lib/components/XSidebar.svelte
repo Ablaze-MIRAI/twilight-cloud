@@ -14,6 +14,7 @@
     } from "lucide-svelte";
 
     import { callApi } from "$lib/browser/api";
+    import { signOut } from "$lib/browser/signout";
     import AddCategoryDialog from "$lib/components/AddCategoryDialog.svelte";
     import SidebarNoteTree from "$lib/components/sidebar/SidebarNoteTree.svelte";
     import { Button } from "$lib/components/ui/button";
@@ -37,21 +38,6 @@
 
     const fetchNoteTree = async (): Promise<NoteTree[]> => {
         return callApi<NoteTree[]>("/api/note/tree", "GET");
-    };
-
-    const signOut = async () => {
-        // Remove cookies
-        await callApi("/api/me/logout", "GET");
-        await callApi("/auth/logout", "GET");
-
-        document.cookie.split(";").forEach((cookie) => {
-            const cookieName = cookie.split("=")[0].trim();
-            document.cookie = `${cookieName}=; max-age=0; path=/`;
-        });
-
-        localStorage.clear();
-
-        location.reload();
     };
 
     let currentPath = $state($page.url.pathname);

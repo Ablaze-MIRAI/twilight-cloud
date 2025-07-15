@@ -1,5 +1,7 @@
 import { startAuthentication } from "@simplewebauthn/browser";
 
+import { signOut } from "$lib/browser/signout";
+
 const oAuthStatus = localStorage.getItem("oAuth");
 const oAuthTryCount = Number(localStorage.getItem("oAuthTryCount")) || 0;
 const lastOAuthTime = localStorage.getItem("lastOAuthTime");
@@ -10,7 +12,7 @@ export async function signIn(expectedUserId?: string): Promise<void> {
         if (lastOAuthTime && new Date(lastOAuthTime).getTime() > Date.now() - 10 * 1000 && oAuthTryCount >= 3) {
             localStorage.removeItem("isLoggedIn");
             alert("Google OAuth authentication failed multiple times. Logging out.");
-            location.reload();
+            signOut();
 
             return;
         }
