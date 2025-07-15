@@ -221,7 +221,7 @@ export class ExternalAuthService extends AuthService {
                 }
             });
 
-            return this.generateAppToken(created.id , new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)); // 1 week
+            return this.generateAppToken(created.id , new Date(Date.now() + 60 * 60 * 1000)); // 1 hour
         }
     }
 
