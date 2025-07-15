@@ -47,7 +47,6 @@
             (Date.now() + 15 * 60 * 1000).toString(),
         );
 
-        document.cookie = "oauth=google; SameSite=Strict; Secure";
         location.href = "/auth/google";
     };  
 
