@@ -239,7 +239,7 @@ export class ExternalAuthService extends AuthService {
         const challenge = JSON.stringify(state);
 
         // generate challenge token
-        return this.generateChallengeToken(linkAccountId ?? "ANON", challenge, new Date(Date.now() + 60 * 10)); // 10 minutes
+        return this.generateChallengeToken(linkAccountId ?? "ANON", challenge, new Date(Date.now() + 5 * 60 * 1000)); // 5 minutes
     }
 
     public validateLinkState(encryptedState: string): { arcticToken: string, linkAccountId: string | undefined, token: string | undefined } {
