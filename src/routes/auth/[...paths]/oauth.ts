@@ -43,6 +43,7 @@ export const googleOAuth2Controller = new Elysia({prefix: "/google"})
         linkAccountId.set({
             value: "",
             maxAge: 0,
+            secure: true,
         });
 
         set.status = 307;

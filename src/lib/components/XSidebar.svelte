@@ -41,6 +41,11 @@
 
     const signOut = async () => {
         // Remove cookies
+        document.cookie.split(";").forEach((cookie) => {
+            const cookieName = cookie.split("=")[0].trim();
+            document.cookie = `${cookieName}=; max-age=0; path=/`;
+        });
+
         await callApi("/auth/logout", "GET");
         localStorage.removeItem("isLoggedIn");
 
