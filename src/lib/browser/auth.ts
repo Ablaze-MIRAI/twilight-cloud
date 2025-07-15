@@ -16,7 +16,7 @@ export async function signIn(expectedUserId?: string): Promise<void> {
         }
 
         // 前回の試行から10秒以上経過していればカウントをリセット
-        if (lastOAuthTime && new Date(lastOAuthTime).getTime() < Date.now() - 10 * 1000) {
+        if (lastOAuthTime && new Date(lastOAuthTime).getTime() < Date.now() + 10 * 1000) {
             localStorage.removeItem("oAuthTryCount");
             localStorage.removeItem("lastOAuthTime");
         }
