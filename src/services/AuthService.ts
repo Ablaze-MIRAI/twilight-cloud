@@ -200,7 +200,7 @@ export class ExternalAuthService extends AuthService {
 
         if (account && account.user) {
             console.log(`User ${externalUid} == ${account.user.id} already exists`);
-            return this.generateAppToken(account.user.id, new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)); // 1 week
+            return this.generateAppToken(account.user.id, new Date(Date.now() + 6 * 60 * 60 * 1000)); // 6 hours
         } else {
             console.log(`User ${externalUid} does not exist, creating user`);
 
@@ -221,7 +221,7 @@ export class ExternalAuthService extends AuthService {
                 }
             });
 
-            return this.generateAppToken(created.id , new Date(Date.now() + 60 * 60 * 1000)); // 1 hour
+            return this.generateAppToken(created.id , new Date(Date.now() + 6 * 60 * 60 * 1000)); // 6 hour
         }
     }
 
@@ -461,7 +461,7 @@ export class PasskeyAuthService extends AuthService {
         }
 
         return { 
-            token: this.generateAppToken(cred.userId, new Date(Date.now() + 60 * 60 * 1000)),
+            token: this.generateAppToken(cred.userId, new Date(Date.now() + 6 * 60 * 60 * 1000)), // 6 hours
             uid: cred.userId
         };
     }

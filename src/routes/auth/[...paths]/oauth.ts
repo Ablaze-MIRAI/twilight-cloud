@@ -97,7 +97,7 @@ export const googleOAuth2Controller = new Elysia({prefix: "/google"})
             httpOnly: true,
             secure: true,
             sameSite: "strict",
-            expires: new Date(Date.now() + 30 * 60 * 1000), 
+            // expires: new Date(Date.now() + 30 * 60 * 1000), 
             path: "/api"
         });
 

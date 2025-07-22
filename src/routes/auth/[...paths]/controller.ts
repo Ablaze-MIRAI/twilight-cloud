@@ -117,7 +117,7 @@ export const authController = new Elysia({ prefix: "/auth", aot: false, precompi
             httpOnly: true,
             secure: true,
             sameSite: "strict",
-            expires: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
+            // expires: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
             path: "/api"
         });
 
@@ -126,7 +126,7 @@ export const authController = new Elysia({ prefix: "/auth", aot: false, precompi
             httpOnly: true,
             secure: true,
             sameSite: "strict",
-            expires: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
+            // expires: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
             path: "/auth"
         });
 
