@@ -21,6 +21,13 @@
                 description: "You have successfully signed in.",
             });
 
+            // 1時間後に再認証
+            // 実際のトークンの有効期限は6時間だが、編集中にトークンが切れて保存できなくなることを防止するため前回の認証から1時間後には再認証を行う
+            localStorage.setItem(
+                "nextAuthenticationTime",
+                (Date.now() + 60 * 60 * 1000).toString(),
+            );
+
             setTimeout(() => {
                 window.location.reload();
             }, 1000);
@@ -40,11 +47,11 @@
 
         document.cookie = "auth=oAuthGoogle; SameSite=Strict; Secure";
 
-        // 15分後に再認証
-        // 実際のトークンの有効期限は60分だが、編集中にトークンが切れて保存できなくなることを防止するために15分おきに再認証させる
+        // 1時間後に再認証
+        // 実際のトークンの有効期限は6時間だが、編集中にトークンが切れて保存できなくなることを防止するため前回の認証から1時間後には再認証を行う
         localStorage.setItem(
             "nextAuthenticationTime",
-            (Date.now() + 15 * 60 * 1000).toString(),
+            (Date.now() + 60 * 60 * 1000).toString(),
         );
 
         location.href = "/auth/google";

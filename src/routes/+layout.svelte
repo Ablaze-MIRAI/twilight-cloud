@@ -7,11 +7,13 @@
 
     import { Toaster } from "svelte-sonner";
 
+    import { signOut } from "$lib/browser/signout";
     import XSidebar from "$lib/components/XSidebar.svelte";
     import XWelcome from "$lib/components/XWelcome.svelte";
     import FatalErrorDialog from "$lib/components/error/FatalErrorDialog.svelte";
     import * as Sidebar from "$lib/components/ui/sidebar/index.js";
     import { type User } from "@prisma/client";
+
 
     // states
     let fatalErrorOccurred = $state(false);
@@ -20,7 +22,6 @@
 
     const isSignedIn = browser ? localStorage.getItem("isLoggedIn") === "true" : true;
 
-    // リロードされる度に呼ばれる。時間経過での再認証を行う場合は呼び出されない。
     const setUserInformation = async (res: Response) => {
         const user: User = await res.json();
         username = user.name ?? "User";
@@ -42,6 +43,18 @@
                 } else if (!res.ok) {
                     throw new Error("Failed to fetch user data: " + res.statusText);
                 } else {
+                    const nextAuthenticationTime = localStorage.getItem("nextAuthenticationTime");
+                    if (nextAuthenticationTime && Date.now() > parseInt(nextAuthenticationTime)) {
+                        try {
+                            // nextAuthenticationTimeが過ぎている場合はサインアウトして再認証
+                            await signOut();
+                        } catch {
+                            localStorage.clear();
+                            location.reload();
+                        } finally {
+                            await new Promise((resolve) => setTimeout(resolve, 1000));
+                        }
+                    }
                     setUserInformation(res);
                 }
             } catch (error) {
