@@ -14,7 +14,7 @@
     "docker:start": "npx prisma migrate deploy && node build/index.js"
   },
   "devDependencies": {
-    "@playwright/test": "^1.52.0",
+    "@playwright/test": "^1.54.2",
     "@simplewebauthn/browser": "^13.1.0",
     "@sveltejs/adapter-auto": "^6.0.0",
     "@sveltejs/adapter-node": "^5.2.12",
