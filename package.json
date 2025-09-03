@@ -59,7 +59,7 @@
     "mode-watcher": "^0.5.1",
     "playwright": "^1.52.0",
     "prismock": "^1.35.4",
-    "sass-embedded": "^1.87.0",
+    "sass-embedded": "^1.92.0",
     "svelte": "^5.22.6",
     "svelte-awesome-color-picker": "^4.0.2",
     "svelte-check": "^4.3.0",
