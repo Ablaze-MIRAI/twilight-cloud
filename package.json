@@ -55,7 +55,7 @@
     "globals": "^16.0.0",
     "lowlight": "^3.3.0",
     "lucide-svelte": "^0.487.0",
-    "magic-string": "^0.30.18",
+    "magic-string": "^0.30.19",
     "mode-watcher": "^0.5.1",
     "playwright": "^1.52.0",
     "prismock": "^1.35.4",
