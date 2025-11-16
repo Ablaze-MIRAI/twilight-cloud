@@ -10,6 +10,13 @@
         "format": "biome format --write"
     },
     "dependencies": {
+        "@tiptap/core": "^3.10.7",
+        "@tiptap/extension-placeholder": "^3.10.7",
+        "@tiptap/extension-text-align": "^3.10.7",
+        "@tiptap/extension-underline": "^3.10.7",
+        "@tiptap/pm": "^3.10.7",
+        "@tiptap/react": "^3.10.7",
+        "@tiptap/starter-kit": "^3.10.7",
         "next": "16.0.3",
         "react": "19.2.0",
         "react-dom": "19.2.0"
