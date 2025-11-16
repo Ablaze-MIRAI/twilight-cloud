@@ -1,7 +1,11 @@
 "use client";
 
 import { EditorContent, useEditor } from "@tiptap/react";
+import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
+
+import { EditorBubbleMenu } from "./menu/EditorMenu";
+
 
 export function Editor() {
     const editor = useEditor({
@@ -59,6 +63,11 @@ export function Editor() {
             <div className="mb-8">
                 <input id="title" name="title" type="text" className="w-full border-0 border-b-2 border-gray-50 bg-transparent py-4 text-4xl font-bold outline-none placeholder-gray-400 focus:border-gray-600 transition-colors" placeholder="Title" />
             </div>
+            {editor && (
+                <BubbleMenu editor={editor}>
+                    <EditorBubbleMenu editor={editor} />
+                </BubbleMenu>
+            )}
             <EditorContent className="w-full min-h-screen" editor={editor} />
         </div>
     );

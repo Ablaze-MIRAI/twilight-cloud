@@ -19,7 +19,8 @@
         "@tiptap/starter-kit": "^3.10.7",
         "next": "16.0.3",
         "react": "19.2.0",
-        "react-dom": "19.2.0"
+        "react-dom": "19.2.0",
+        "react-icons": "^5.5.0"
     },
     "devDependencies": {
         "@biomejs/biome": "2.2.0",
