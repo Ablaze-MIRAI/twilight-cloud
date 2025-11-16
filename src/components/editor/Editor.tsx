@@ -4,6 +4,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 
+import { SlashCommand } from "./core/SlashMenu/SlashCommandExtension";
 import { EditorBubbleMenu } from "./ui/EditorMenu";
 import { SideMenu } from "./ui/SideMenu";
 
@@ -11,7 +12,7 @@ import { SideMenu } from "./ui/SideMenu";
 export function Editor() {
     const editor = useEditor({
         immediatelyRender: false,
-        extensions: [StarterKit],
+        extensions: [StarterKit, SlashCommand],
     });
 
     return (
