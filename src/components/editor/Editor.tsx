@@ -4,8 +4,8 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 
-import { EditorBubbleMenu } from "./menu/EditorMenu";
-import { SideMenu } from "./menu/SideMenu";
+import { EditorBubbleMenu } from "./ui/EditorMenu";
+import { SideMenu } from "./ui/SideMenu";
 
 
 export function Editor() {
