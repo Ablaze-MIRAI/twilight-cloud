@@ -1,29 +1,39 @@
 {
     "name": "Twilight Dev",
-    "dockerComposeFile": "docker-compose.yml",
-	"service": "app",
+    "image": "node:24",
     "features": {
         "ghcr.io/devcontainers-extra/features/pnpm:2": {}
     },
-    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+    "workspaceFolder": "/workspace",
     "remoteUser": "node",
     "overrideCommand": true,
     "customizations": {
         "vscode": {
-            "extensions": [
-                "svelte.svelte-vscode",
-                "bradlc.vscode-tailwindcss",
-                "dbaeumer.vscode-eslint",
-                "EditorConfig.EditorConfig",
-                "vitest.explorer",
-                "ms-playwright.playwright",
-                "prisma.prisma",
-                "ckolkman.vscode-postgres"
-            ],
+            "extensions": ["EditorConfig.EditorConfig", "biomejs.biome", "bradlc.vscode-tailwindcss"],
             "settings": {
                 "editor.linkedEditing": true,
                 "editor.formatOnPaste": true,
-                "editor.formatOnSave": true
+                "editor.formatOnSave": true,
+
+                "[go]": {
+                    "editor.defaultFormatter": "golang.go"
+                },
+                "[typescript]": {
+                    "editor.defaultFormatter": "biomejs.biome"
+                },
+                "[typescriptreact]": {
+                    "editor.defaultFormatter": "biomejs.biome"
+                },
+                "[json]": {
+                    "editor.defaultFormatter": "biomejs.biome"
+                },
+                "[javascript]": {
+                    "editor.defaultFormatter": "biomejs.biome"
+                },
+                "[javascriptreact]": {
+                    "editor.defaultFormatter": "biomejs.biome"
+                }
             }
         }
     }
