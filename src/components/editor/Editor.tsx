@@ -5,6 +5,7 @@ import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 
 import { EditorBubbleMenu } from "./menu/EditorMenu";
+import { SideMenu } from "./menu/SideMenu";
 
 
 export function Editor() {
@@ -59,17 +60,35 @@ export function Editor() {
                 .ProseMirror h3 {
                     font-size: 1.5rem;
                 }
+
+                .drag-handle {
+                    align-items: center;
+                    border-radius: 0.25rem;
+                    margin-right: 24px;
+                    cursor: grab;
+                    display: flex;
+                    height: 1.5rem;
+                    justify-content: center;
+                    width: 1.5rem;
+
+                    svg {
+                        width: 1.25rem;
+                        height: 1.25rem;
+                    }
+                }
             `}</style>
             <div className="mb-8">
                 <input id="title" name="title" type="text" className="w-full border-0 border-b-2 border-gray-50 bg-transparent py-4 text-4xl font-bold outline-none placeholder-gray-400 focus:border-gray-600 transition-colors" placeholder="Title" />
             </div>
             {editor && (
-                <BubbleMenu editor={editor}>
-                    <EditorBubbleMenu editor={editor} />
-                </BubbleMenu>
+                <>
+                    <BubbleMenu editor={editor}>
+                        <EditorBubbleMenu editor={editor} />
+                    </BubbleMenu>
+                    <SideMenu editor={editor} />
+                </>
             )}
             <EditorContent className="w-full min-h-screen" editor={editor} />
         </div>
     );
 }
-
