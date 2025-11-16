@@ -23,7 +23,6 @@ export function Editor() {
 
                 .ProseMirror {
                     height: calc(100% - 20px);
-                    padding: 10px;
 
                     line-height: 1.5;
                 }
@@ -59,22 +58,6 @@ export function Editor() {
 
                 .ProseMirror h3 {
                     font-size: 1.5rem;
-                }
-
-                .drag-handle {
-                    align-items: center;
-                    border-radius: 0.25rem;
-                    margin-right: 24px;
-                    cursor: grab;
-                    display: flex;
-                    height: 1.5rem;
-                    justify-content: center;
-                    width: 1.5rem;
-
-                    svg {
-                        width: 1.25rem;
-                        height: 1.25rem;
-                    }
                 }
             `}</style>
             <div className="mb-8">
