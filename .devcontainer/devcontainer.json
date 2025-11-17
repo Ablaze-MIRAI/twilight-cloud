@@ -16,6 +16,11 @@
                 "editor.formatOnPaste": true,
                 "editor.formatOnSave": true,
 
+                "editor.codeActionsOnSave": {
+                    "source.organizeImports.biome": "explicit",
+                    "source.fixAll.biome": "explicit"
+                },
+
                 "[go]": {
                     "editor.defaultFormatter": "golang.go"
                 },
