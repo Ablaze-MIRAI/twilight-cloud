@@ -38,7 +38,9 @@
                 },
                 "[javascriptreact]": {
                     "editor.defaultFormatter": "biomejs.biome"
-                }
+                },
+                
+                "biome.lsp.bin": "pnpm biome"
             }
         }
     }
