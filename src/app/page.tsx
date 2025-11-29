@@ -53,7 +53,6 @@ export default function Home() {
                             <p>{notes.length} Notes</p>
                         </div>
                     </div>
-                    {/** biome-ignore lint/performance/noImgElement: ignore here */}
                     <img src="/eve-M-rtWw1OlnQ-unsplash.jpg" alt="bg" className="h-64 w-auto object-cover" />
                 </div>
 
