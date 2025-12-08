@@ -41,6 +41,7 @@
         "@types/react-dom": "^19",
         "tailwindcss": "^4",
         "typescript": "^5",
-        "vite": "^7.2.7"
+        "vite": "^7.2.7",
+        "vitest": "^4.0.15"
     }
 }
