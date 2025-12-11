@@ -11,7 +11,7 @@ on:
 
 jobs:
     eslint:
-        name: ⚙️ Check license of packages with Trivy
+        name: 🔍️ Check license of packages with Trivy
         runs-on: ubuntu-latest
         permissions:
             contents: read
