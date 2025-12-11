@@ -25,7 +25,7 @@ const FullScreenModal = ({ children }: { children: React.ReactNode }) => {
             <div className="p-6 max-w-3xl w-full">{children}</div>
         </div>
     );
-}
+};
 
 const NoteCard = ({ title, content, updatedAt }: { title: string; content: string; updatedAt: Date }) => {
     return (

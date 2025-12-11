@@ -3,7 +3,6 @@ import { Suggestion, type SuggestionOptions } from "@tiptap/suggestion";
 
 import { suggestionConfig } from "./SlashCommandList";
 
-
 type SlashCommandOptions = {
     suggestion: Partial<SuggestionOptions>;
 };

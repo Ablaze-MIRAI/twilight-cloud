@@ -13,10 +13,7 @@ export default function SignInPage() {
                         </div>
                     </div>
                     <div className="px-8 pb-8">
-                        <button
-                            type="button"
-                            className="w-full bg-neutral-100 text-black py-2 px-4 rounded-md hover:bg-neutral-200 transition-colors duration-300"
-                        >
+                        <button type="button" className="w-full bg-neutral-100 text-black py-2 px-4 rounded-md hover:bg-neutral-200 transition-colors duration-300">
                             Sign in or Sign up
                         </button>
                     </div>

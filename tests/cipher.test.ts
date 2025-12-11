@@ -3,8 +3,6 @@ import { describe, expect, it } from "vitest";
 import { generateCryptoKey, generateRandomIV } from "@/cipher/key";
 import { createCryptoTransformStream, createDecryptStream } from "@/cipher/stream";
 
-
-
 const testKey = await generateCryptoKey();
 const testIV = await generateRandomIV();
 

@@ -6,7 +6,6 @@ import { ReactRenderer } from "@tiptap/react";
 import type { SuggestionOptions, SuggestionProps } from "@tiptap/suggestion";
 import tippy, { type Instance as TippyInstance, type Props as TippyProps } from "tippy.js";
 
-
 interface CommandItem {
     title: string;
     icon: string;

@@ -8,7 +8,6 @@ import { SlashCommand } from "./core/SlashMenu/SlashCommandExtension";
 import { EditorBubbleMenu } from "./ui/EditorMenu";
 import { SideMenu } from "./ui/SideMenu";
 
-
 export function Editor() {
     const editor = useEditor({
         immediatelyRender: false,
