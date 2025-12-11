@@ -37,4 +37,7 @@ jobs:
                 version: latest
 
             - name: Evaluate Policy
-              run: opa eval -i trivy-result.json -d .github/license.rego "data.user.license_check.deny" --format json | jq -e '.result[0].expressions[0].value | length == 0' > /dev/null
+              run: |
+                opa eval -i trivy-result.json -d .github/license.rego "data.user.license_check.deny" --format json > opa-result.json
+                cat opa-result.json
+                jq -e '.result[0].expressions[0].value | length == 0' opa-result.json
