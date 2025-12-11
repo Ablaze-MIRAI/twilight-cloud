@@ -1,0 +1,36 @@
+name: Trivy CI
+permissions: {}
+on:
+    pull_request:
+        types:
+            - opened
+            - synchronize
+    push:
+        branches:
+            - "**"
+
+jobs:
+    eslint:
+        name: ⚙️ Check license of packages with Trivy
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+
+        steps:
+            - uses: actions/checkout@v6
+
+            - name: Run Trivy License Scan
+              uses: aquasecurity/trivy-action@master
+              with:
+                scan-type: 'fs'
+                scanners: 'license'
+                format: 'json'
+                output: 'trivy-result.json'
+
+            - name: Setup OPA
+              uses: open-policy-agent/setup-opa@v2
+              with:
+                version: latest
+
+            - name: Evaluate Policy
+              run: sh -c 'opa eval -i trivy-result.json -d .github/license.rego "data.user.license_check.deny" --format pretty | tee /dev/tty | grep -q "NOT ALLOWED LICENSE" && exit 1 || exit 0'
