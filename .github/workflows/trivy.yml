@@ -34,4 +34,4 @@ jobs:
                 version: latest
 
             - name: Evaluate Policy
-              run: sh -c 'opa eval -i trivy-result.json -d .github/license.rego "data.user.license_check.deny" --format pretty | tee /dev/tty | grep -q "NOT ALLOWED LICENSE" && exit 1 || exit 0'
+              run: opa eval -i trivy-result.json -d .github/license.rego "data.user.license_check.deny" --format json | jq -e '.result[0].expressions[0].value | length == 0' > /dev/null
