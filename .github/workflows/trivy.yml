@@ -51,4 +51,4 @@ jobs:
               run: |
                 opa eval -i trivy-result.json -d .github/license.rego "data.user.license_check.deny" --format json > opa-result.json
                 cat opa-result.json
-                jq -e '.result[0].expressions[0].value | length == 0' opa-result.json
+                jq -e '.result[0].expressions[0].value | length == 0' opa-result.json > /dev/null
