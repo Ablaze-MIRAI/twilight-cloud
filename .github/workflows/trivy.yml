@@ -26,6 +26,7 @@ jobs:
                 scanners: 'license'
                 format: 'json'
                 output: 'trivy-result.json'
+                version: latest
 
             - name: Setup OPA
               uses: open-policy-agent/setup-opa@v2
