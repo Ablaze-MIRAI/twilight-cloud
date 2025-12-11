@@ -8,9 +8,10 @@
     "workspaceFolder": "/workspace",
     "remoteUser": "node",
     "overrideCommand": true,
+    "postCreateCommand": "pnpm install",
     "customizations": {
         "vscode": {
-            "extensions": ["EditorConfig.EditorConfig", "biomejs.biome", "bradlc.vscode-tailwindcss"],
+            "extensions": ["biomejs.biome", "bradlc.vscode-tailwindcss"],
             "settings": {
                 "editor.linkedEditing": true,
                 "editor.formatOnPaste": true,
