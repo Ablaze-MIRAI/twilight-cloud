@@ -8,7 +8,8 @@
         "build-sw": "rm -rf dist && vite build",
         "start": "next start",
         "lint": "biome check",
-        "format": "biome format --write"
+        "format": "biome format --write",
+        "ci:vitest": "vitest"
     },
     "dependencies": {
         "@floating-ui/dom": "^1.7.4",
