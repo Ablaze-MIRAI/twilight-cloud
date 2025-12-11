@@ -27,6 +27,9 @@ jobs:
                 format: 'json'
                 output: 'trivy-result.json'
                 version: latest
+            
+            - name: Log trivy-result.json
+              run: cat trivy-result.json
 
             - name: Setup OPA
               uses: open-policy-agent/setup-opa@v2
