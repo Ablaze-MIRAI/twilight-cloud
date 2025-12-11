@@ -10,7 +10,7 @@ allowed_licenses := {
 allowed_packages := {
     # LGPLだがサーバーサイドでの動作なので許容する
     "@img/sharp-libvips-linux-x64",
-    "@img/sharp-libvips-linuxmusl-x64"
+    "@img/sharp-libvips-linuxmusl1-x64"
 }
 
 deny contains msg if {
