@@ -27,7 +27,7 @@
         "@tiptap/suggestion": "^3.10.7",
         "@tiptap/y-tiptap": "^3.0.1",
         "next": "16.0.10",
-        "react": "19.2.0",
+        "react": "19.2.3",
         "react-dom": "19.2.0",
         "react-icons": "^5.5.0",
         "tippy.js": "^6.3.7",
