@@ -18,7 +18,7 @@
         "@tiptap/extension-drag-handle": "^3.10.7",
         "@tiptap/extension-drag-handle-react": "^3.10.7",
         "@tiptap/extension-node-range": "^3.10.7",
-        "@tiptap/extension-placeholder": "^3.10.7",
+        "@tiptap/extension-placeholder": "^3.13.0",
         "@tiptap/extension-text-align": "^3.10.7",
         "@tiptap/extension-underline": "^3.10.7",
         "@tiptap/pm": "^3.10.8",
